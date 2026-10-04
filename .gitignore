@@ -1,0 +1,9 @@
+/.vs
+
+# Arduino build and local configuration
+build/
+*.bin
+*.hex
+*.elf
+.vscode/
+.arduino15/

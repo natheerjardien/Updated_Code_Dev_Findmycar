@@ -1,0 +1,36 @@
+services:
+  frontend-service:
+    build:
+      context: .
+      dockerfile: ./SecurityWebapp/securityWeb/frontend/Dockerfile
+    container_name: parkitects-frontend
+    ports:
+      - "8081:8080"
+    depends_on:
+      - backend2-service
+    restart: unless-stopped
+    networks:
+      - parkitects-network
+
+  backend2-service:
+    build:
+      context: .
+      dockerfile: ./backend2/Dockerfile
+    container_name: parkitects-backend2
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=tcp:parkitects-db.database.windows.net,1433;Initial Catalog=ParkitechDB;Persist Security Info=False;User ID=parkitects-db;Password=Password1!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;
+      - AzureBlobStorage__ConnectionString=DefaultEndpointsProtocol=https;AccountName=parkitechs;AccountKey=Q6+U/rkRMfxiFRM9xtx/UV11z4Qs9lcEN1s8EjJDaKNvTZzVOicMuXxxkXe5y1I14VXdOAm30+xP+AStqmbyHw==;EndpointSuffix=core.windows.net
+      - ASPNETCORE_URLS=http://0.0.0.0:5000 # <-- FORCES C# TO LISTEN ON 5000 INTERNALLY
+      - ASPNETCORE_ENVIRONMENT=Development
+      - TZ=Africa/Johannesburg # <-- Sets timezone to South Africa to send rule push notifications at noon (Pranjal, 2024)
+    ports:
+      - "8080:5000"
+    restart: unless-stopped
+    networks:
+      - parkitects-network
+
+networks:
+  parkitects-network:
+    driver: bridge
+#References
+#Pranjal, P., 2024. How to set timezone in docker container via docker compose. (Version 10.0) [Source Code]. Available at: < https://github.com/bluenviron/mediamtx/discussions/4083 > [Accessed 3 October 2026]]

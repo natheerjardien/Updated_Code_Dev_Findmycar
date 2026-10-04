@@ -1,0 +1,11 @@
+# Exclude build binaries and dependencies
+**/bin/
+**/obj/
+**/node_modules/
+**/.git/
+**/.vs/
+**/.vscode/
+
+# Exclude OS/Cloud artifacts
+**/.DS_Store
+Thumbs.db
